@@ -1,0 +1,15 @@
+/* ==========================================================================
+   App-Level Custom Styles & Utilities
+   ========================================================================== */
+
+/* Page layout structure */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+  padding: var(--space-6);
+}
