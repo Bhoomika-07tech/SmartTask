@@ -1,0 +1,142 @@
+/* ==========================================================================
+   PublicLayout Component Styles
+   Uses SmartTask design tokens from index.css
+   ========================================================================== */
+
+.public-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--page-background);
+}
+
+.public-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Footer Styles */
+.public-footer {
+  background-color: var(--card-white);
+  border-top: 1px solid var(--lavender-border);
+  padding: var(--space-8) var(--space-6) var(--space-6);
+  margin-top: auto;
+}
+
+.public-footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.public-footer-brand-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.public-footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.public-footer-brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background-color: var(--primary-purple);
+  color: var(--text-white);
+  border-radius: var(--radius-sm);
+}
+
+.public-footer-brand-text {
+  background: linear-gradient(135deg, var(--text-main) 0%, var(--primary-purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.public-footer-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  max-width: 380px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.public-footer-links-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.public-footer-heading {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-main);
+  margin-bottom: var(--space-1);
+}
+
+.public-footer-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.public-footer-link {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.public-footer-link:hover {
+  color: var(--primary-purple);
+}
+
+.public-footer-bottom {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--lavender-border);
+}
+
+.public-footer-copyright {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Tablet & Desktop Responsive Layout */
+@media (min-width: 768px) {
+  .public-footer-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+    gap: var(--space-8);
+  }
+
+  .public-footer-links-section {
+    align-items: flex-end;
+  }
+
+  .public-footer-links {
+    justify-content: flex-end;
+  }
+
+  .public-footer-bottom {
+    grid-column: 1 / -1;
+  }
+}
