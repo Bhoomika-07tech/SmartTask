@@ -1,18 +1,27 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/useAuth';
+import { supabase } from '../lib/supabase';
+import Button from './Button';
 import './Navbar.css';
 
 /**
  * Responsive navigation bar component for SmartTask.
- * Displays branding, navigation links (Home, Login, Sign Up) using React Router Link,
- * and collapses into a responsive mobile menu on smaller screens.
+ * Displays branding, navigation links, and dynamic actions based on authentication state:
+ * - Unauthenticated: Home, Login links, and Sign Up button.
+ * - Authenticated: Home, Dashboard, Profile links, and Logout button with loading and error states.
  *
  * @param {Object} props
  * @param {string} [props.brandName='SmartTask'] - The brand name displayed in the navbar.
  * @param {string} [props.className=''] - Optional additional CSS classes.
  */
 function Navbar({ brandName = 'SmartTask', className = '' }) {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState('');
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -20,6 +29,35 @@ function Navbar({ brandName = 'SmartTask', className = '' }) {
 
   const closeMenu = () => {
     setIsOpen(false);
+  };
+
+  /**
+   * Handles user logout via Supabase Auth.
+   * Disables button while pending to prevent duplicate clicks,
+   * catches and displays errors, and redirects to /login on success.
+   */
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    setLogoutError('');
+    setIsLoggingOut(true);
+
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        setLogoutError(error.message);
+        return;
+      }
+
+      closeMenu();
+      navigate('/login');
+    } catch (err) {
+      setLogoutError(
+        err.message || 'An unexpected error occurred during logout. Please try again.'
+      );
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -68,19 +106,49 @@ function Navbar({ brandName = 'SmartTask', className = '' }) {
             <Link to="/" className="navbar-link" onClick={closeMenu}>
               Home
             </Link>
-            <Link to="/login" className="navbar-link" onClick={closeMenu}>
-              Login
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link to="/dashboard" className="navbar-link" onClick={closeMenu}>
+                  Dashboard
+                </Link>
+                <Link to="/profile" className="navbar-link" onClick={closeMenu}>
+                  Profile
+                </Link>
+              </>
+            ) : (
+              <Link to="/login" className="navbar-link" onClick={closeMenu}>
+                Login
+              </Link>
+            )}
           </div>
 
           <div className="navbar-actions">
-            <Link
-              to="/signup"
-              className="btn btn-primary navbar-btn-signup"
-              onClick={closeMenu}
-            >
-              Sign Up
-            </Link>
+            {isAuthenticated ? (
+              <div className="navbar-auth-actions">
+                <Button
+                  variant="outline"
+                  className="navbar-btn-logout"
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  aria-busy={isLoggingOut}
+                >
+                  {isLoggingOut ? 'Logging out...' : 'Log Out'}
+                </Button>
+                {logoutError && (
+                  <div className="navbar-error" role="alert">
+                    {logoutError}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                to="/signup"
+                className="btn btn-primary navbar-btn-signup"
+                onClick={closeMenu}
+              >
+                Sign Up
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -142,9 +142,31 @@
   gap: var(--space-3);
 }
 
-.navbar-btn-signup {
+.navbar-auth-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.navbar-btn-signup,
+.navbar-btn-logout {
   padding: 0.6rem 1.25rem;
   font-size: 0.9rem;
+}
+
+.navbar-btn-logout:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.navbar-error {
+  font-size: 0.85rem;
+  color: #DC2626;
+  background-color: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  line-height: 1.4;
 }
 
 /* Responsive Breakpoint for Mobile and Tablet */
@@ -189,7 +211,20 @@
     padding-top: var(--space-2);
   }
 
-  .navbar-btn-signup {
+  .navbar-auth-actions {
+    flex-direction: column;
+    align-items: stretch;
     width: 100%;
+    gap: var(--space-2);
+  }
+
+  .navbar-btn-signup,
+  .navbar-btn-logout {
+    width: 100%;
+  }
+
+  .navbar-error {
+    width: 100%;
+    text-align: center;
   }
 }
